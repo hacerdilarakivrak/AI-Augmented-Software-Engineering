@@ -90,13 +90,23 @@ Do not write anything after the final decision.
 
 **Input:** Bought 10 days ago, unused, not final sale.
 
-**Output (final decision checked by the program):** DECISION: YES
+**Output (actual model response):**
+
+Step 1: The purchase was made within 30 days, so this condition is satisfied.
+
+Step 2: The item is unused and in its original condition, so this condition is also satisfied.
+
+Step 3: The item was not marked as final sale, so this condition is satisfied as well.
+
+Step 4: Since all three conditions are satisfied, the customer is eligible for a refund.
+
+DECISION: YES
 
 **Test Result:** 3/3 correct — PASS
 
 ### What I Learned
 
-I learned that step-by-step prompting helps the model evaluate multiple refund conditions systematically and produce consistent decisions.
+I learned that step-by-step prompting helps the model evaluate multiple refund conditions systematically and produce consistent decisions. By explicitly checking the purchase date, item condition, and final-sale status, the model can explain how it reaches its final decision while following the required output format.
 
 ---
 
@@ -145,7 +155,7 @@ The built-in test verifies that the model calls the correct function with the co
 
 ### What I Learned
 
-I learned that tool calling allows the model to retrieve order information through a function instead of guessing, making the information more reliable.
+I learned that tool calling allows the model to retrieve order information through a function instead of guessing, making the information more reliable. Clear tool descriptions and parameter instructions help the model select the correct function and pass the exact order ID.
 
 ---
 
@@ -182,22 +192,50 @@ The retriever:
 - Selects up to three relevant chunks with the highest scores.
 - Excludes chunks that have no matching keywords.
 
-This helps the model focus on relevant information from data/help_center.txt.
+This helps the model focus on relevant information from `data/help_center.txt`.
 
 ### Sample Input/Output
 
+**Example 1 — Answer Grounded in the Help-Center**
+
+**Input:** How long do I have to return an item?
+
+**Output (actual model response):**
+
+You may return most items within 30 days of delivery for a full refund.
+
+**Example 2 — International Shipping Information**
+
+**Input:** Do you ship internationally?
+
+**Output (actual model response):**
+
+Yes, we ship internationally.
+
+**Example 3 — Information Not Available in the Help-Center**
+
 **Input:** What's your CEO's home address?
 
-**Output (refusal wording specified in the prompt):** I don't know based on the available help-center information.
+**Output (actual model response):**
+
+I don't know based on the available help-center information.
 
 **Test Result:** 3/3 correct — PASS
 
 ### What I Learned
 
-I learned that RAG helps the model produce grounded answers by retrieving relevant documents and refusing to invent information when the source does not contain the answer.
+I learned that RAG helps the model produce grounded answers by retrieving relevant documents and refusing to invent information when the source does not contain the answer. The keyword-based retriever helps identify relevant help-center information, while the system prompt restricts the model to using only the retrieved context. This technique demonstrated the importance of combining retrieval with clear instructions to reduce unsupported answers.
 
 ---
 
 ## Overall Reflection
 
-Throughout these four prompting techniques, I learned that large language models perform structured tasks more effectively when they receive clear instructions, examples, rules, and output requirements. K-shot prompting improves classification by demonstrating examples, while chain-of-thought prompting organizes decision-making into logical steps. Tool calling enables the model to access information through external functions, and RAG provides relevant knowledge from trusted documents. However, language models still need additional scaffolding, including well-defined prompts, tool descriptions, retrieval functions, and validation tests. These techniques help reduce mistakes and unsupported answers. Although all four implementations passed their built-in tests, real-world applications would require additional testing with more diverse customer questions.
+Throughout these four prompting techniques, I learned that large language models perform structured tasks more effectively when they receive clear instructions, examples, rules, and output requirements.
+
+K-shot prompting improves classification by demonstrating examples, while chain-of-thought prompting organizes decision-making into logical steps. Tool calling enables the model to access information through external functions instead of relying on assumptions, and RAG provides relevant knowledge from trusted documents.
+
+However, language models still need additional scaffolding, including well-defined prompts, tool descriptions, retrieval functions, and validation tests. Without these components, models may produce inconsistent outputs, incorrect decisions, or unsupported information.
+
+These four techniques showed me that effective prompting is not only about asking the right question but also about designing a structured process that guides the model toward reliable results.
+
+Although all four implementations passed their built-in tests, real-world applications would require additional testing with more diverse customer questions and unexpected scenarios.
