@@ -43,14 +43,14 @@ def test_invalid_code_raises():
 def test_total_includes_tax():
     cart = Cart()
     cart.add_item("TEE")
-    assert cart.total() == 2160  # 2000 + 8% tax
+    assert cart.total() == 2759  # 2000 + 8% tax + $5.99 shipping
 
 
 def test_percent_discount():
     cart = Cart()
     cart.add_item("MUG", 2)
     cart.apply_code("SAVE10")
-    assert cart.total() == 2333  # (2400 - 10%) + 8% tax
+    assert cart.total() == 2932  # (2400 - 10%) + 8% tax + $5.99 shipping
 
 
 def test_fixed_discount_applied_before_tax():
@@ -58,4 +58,17 @@ def test_fixed_discount_applied_before_tax():
     cart.add_item("TEE")
     cart.add_item("TEE")
     cart.apply_code("TENOFF")
-    assert cart.total() == 3240  # (4000 - 1000) + 8% tax
+    assert cart.total() == 3839  # (4000 - 1000) + 8% tax + $5.99 shipping
+
+
+def test_free_shipping_at_threshold():
+    cart = Cart()
+    cart.add_item("TEE", 3)  # 6000 cents >= $50.00 free shipping threshold
+    assert cart.total() == 6480  # 6000 + 8% tax + $0 shipping
+
+
+def test_shipping_not_taxed():
+    cart = Cart()
+    cart.add_item("MUG")  # 1200 cents < $50.00 -> $5.99 (599 cents) shipping
+    # subtotal = 1200, tax(1200) = 1296, shipping = 599 -> 1296 + 599 = 1895
+    assert cart.total() == 1895

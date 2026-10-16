@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 TAX_RATE = 0.08
+SHIPPING_FEE = 599
+FREE_SHIPPING_THRESHOLD = 5000
 
 # code -> (kind, value). "percent" values are whole percents; "fixed" values are cents.
 DISCOUNT_CODES = {
@@ -31,8 +33,23 @@ def apply_tax(amount_cents: int) -> int:
     return round(amount_cents * (1 + TAX_RATE))
 
 
+def calculate_shipping(subtotal_cents: int, discounted_cents: int) -> int:
+    """Return shipping fee in cents.
+    - Empty cart pays no shipping.
+    - Free when discounted subtotal >= $50.00 (5000 cents).
+    - Otherwise flat $5.99 (599 cents).
+    """
+    if subtotal_cents == 0:
+        return 0
+    if discounted_cents >= FREE_SHIPPING_THRESHOLD:
+        return 0
+    return SHIPPING_FEE
+
+
 def final_total(subtotal_cents: int, code: str | None = None) -> int:
     """Total the customer pays for a given subtotal and optional discount code."""
     # Discount is applied before tax, per store policy.
-    taxed = apply_tax(subtotal_cents)
-    return apply_discount(taxed, code)
+    discounted = apply_discount(subtotal_cents, code)
+    shipping = calculate_shipping(subtotal_cents, discounted)
+    taxed = apply_tax(discounted)
+    return taxed + shipping
