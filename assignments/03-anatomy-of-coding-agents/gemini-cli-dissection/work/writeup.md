@@ -136,7 +136,7 @@ replace(
 
 - **Deliberately does not:** The tool does not automatically replace every occurrence of matching text. Multiple replacements require the explicit `allow_multiple=true` parameter. It also requires user approval before applying changes.
 
-- **Session evidence:** [OBSERVED] In `session_timeline.txt`, Gemini used `replace` at 15:29:43 to modify `shopcart/cart.py`. Two additional successful `replace` calls occurred at 15:32:31 and 15:37:22.  ```
+- **Session evidence:** [OBSERVED] In `session_timeline.txt`, Gemini used `replace` at 15:29:43 to modify `shopcart/cart.py`. Two additional successful `replace` calls occurred at 15:32:31 and 15:37:22.
 
 
 ### Tool B: `run_shell_command`
