@@ -169,7 +169,6 @@ run_shell_command(
 - **Deliberately does not:** The tool does not independently decide which command is appropriate or guarantee that a command succeeds. It executes the supplied command and reports the output and exit code.
 
 - **Session evidence:** [OBSERVED] In `session_timeline.txt`, the agent invoked `run_shell_command` three times, including a final pytest verification at 15:55:45. All three shell tool calls succeeded.
-  ```
 
 
 ### Why old/new string edits?
