@@ -3,4 +3,4 @@
 For complete repository guidance, architecture, and workflows, please read [AGENTS.md](./AGENTS.md).
 
 ## Scoped Testing Instructions (`test_main.py`)
-Because existing tests reside in root `test_main.py` rather than a `tests/` subdirectory, path-scoped subfolder instructions (`tests/GEMINI.md`) do not automatically apply here. When working on test files (`test_main.py`), explicitly load and adhere to the testing standards outlined in [AGENTS.md](./AGENTS.md) and run `pytest` to validate behavioral tests.
+Because existing tests reside in root `test_main.py` rather than a `tests/` subdirectory, subfolder instructions (`tests/AGENTS.md`) do not apply via automatic directory scoping. Whenever creating or modifying root-level `test_main.py`, Gemini CLI must explicitly read and adhere to the test-specific rules in [`tests/AGENTS.md`](./tests/AGENTS.md). Run `pytest` to validate behavioral tests.
